@@ -4,7 +4,7 @@
     border: 2px solid black;
     width: 150px;
     text-align: center;
-
+}
 body {
     background-color: rgb(127, 127, 137);
     display: flex;
