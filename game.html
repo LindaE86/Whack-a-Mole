@@ -2,13 +2,22 @@
 <html lang="en">
 
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>whack a mole</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styleModal.css">
 </head>
 
 <body>   
+    <div id="modal" class="modalContainer">
+        <h2 class="modalTitle">Enter your Name:</h2>
+        <input class="modalInputName" id="modalInputName" type="text">
+        <button id="modalBtn" class="modalBtn">Save User</button>
+    </div>
     <p id="timer" >01:00</p>
     <div class="game-info">
         <div id="score"><b>Score: 0</b></div>
@@ -43,6 +52,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="playerHandler.js"></script>
  
 </body>
 
