@@ -1,0 +1,41 @@
+body {
+    background-color: rgb(127, 127, 137);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+.game-container {
+    background-color: rgba(18, 70, 15, 0.953);
+    display: grid;
+    grid-template-columns: repeat(5, 120px);
+    gap: 10px;
+    border: 4px solid rgba(19, 18, 18, 0.864);
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+.hole {
+    height: 110px;
+    background: rgb(53, 47, 47);
+    border: 5px solid rgb(30, 30, 30);
+    cursor: pointer;
+    border-radius: 100px;
+}
+
+.hole.active {
+    background-image: url("https://media.istockphoto.com/id/177013895/sv/foto/a-mole-digging-his-way-out-of-a-pile-of-dirt.jpg?s=1024x1024&w=is&k=20&c=SV309TVtBD126GSPWM1zbh9tPbMQRSvmetLaYjGsZq4=");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}

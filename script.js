@@ -45,12 +45,15 @@ document.addEventListener(
 
         // Funktion för att visa tre slumpmässiga moles
         function showThreeRandomMoles() {
-            let moleCount = 0;
-
             const interval = setInterval(() => {
-                if (moleCount >= 3 || timeUp) {
+                if (timeUp) {
                     clearInterval(interval);
                     return;
+                }
+
+                // Kontrollera om det redan finns tre aktiva mullvadar
+                if (chosenMoles.length >= 3) {
+                    return;  // Om det finns tre, gör inget mer förrän en tas bort
                 }
 
                 let randomHole = getRandomHole();
