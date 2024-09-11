@@ -1,40 +1,64 @@
+// script.js
 
+export let startBtn; // används för reset och start
+export let gameActive = false;
+export let score = 0;
+export let timeLeft = 60;
 
+document.addEventListener("DOMContentLoaded", function () {
+    const holes = document.querySelectorAll(".hole");
 
-document.addEventListener(
-    "DOMContentLoaded", function () {
-        const holes =
-            document.querySelectorAll(".hole");
-      
-        let displayHere = document.getElementById("timer");
+    // Score och Time display som visas på skärmen
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const timeDisplay = document.getElementById('timeDisplay');
 
-        let bord;
-        let startBtn; // används för reset och start
-        let timeLeft = 60;
-        let score = 0;
-        let reactionTime = [];
-        let timeUp = false;
-    })
+    scoreDisplay.textContent = `Score: ${score}`;
+    timeDisplay.textContent = `Time Left: ${timeLeft}s`;
 
-// använts så här = CountDown(timeLeft, displayHere);
-function CountDown(time, display){  
-    
-    let timer = time, minutes, seconds;
-    timerInterval = setInterval(() =>{
-      
+    // Anropa funktionen för att skapa knappen när sidan laddas
+    startNewGameButton();
 
-        minutes = parseInt(timer / 60, 10); 
-        seconds =  parseInt(timer % 60, 10); 
+    // Funktion för att starta spelet
+    function startNewGame() {
+        if (!gameActive) {
+            score = 0;
+            timeLeft = 60;
+            gameActive = true;
 
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        console.log( minutes + ":" + seconds)
-        display.innerHTML = `${minutes}:${seconds}`; 
+            scoreDisplay.textContent = `Score: ${score}`;
+            timeDisplay.textContent = `Time Left: ${timeLeft}s`;
 
-        if(--timer < 0){
-            clearInterval(timerInterval);
-            timeUp = true;
+            startBtn.disabled = true;
+
+            startTimer();
         }
+    }
 
-    }, 1000);
-}
+    // Funktion för att starta nedräkning
+    function startTimer() {
+        const timerInterval = setInterval(() => {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timeDisplay.textContent = `Time Left: ${timeLeft}s`;
+            } else {
+                clearInterval(timerInterval);
+                gameActive = false;
+                alert('Game over: ' + score);
+
+                startBtn.disabled = false;
+            }
+        }, 1000);
+    }
+
+    // Funktion för att skapa en Start New Game Button och spara referens till den i startBtn
+    function startNewGameButton() {
+        startBtn = document.createElement('button');
+        startBtn.innerText = 'Start New Game';
+        startBtn.id = 'startNewGameButton';
+        startBtn.disabled = gameActive;
+
+        startBtn.addEventListener('click', startNewGame);
+
+        document.getElementById('startGameButton').appendChild(startBtn);
+    }
+});

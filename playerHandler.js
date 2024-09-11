@@ -1,12 +1,19 @@
-let MODAL = document.getElementById("modal");
+import { startBtn } from './script.js'; // Importera startBtn
 
+let MODAL = document.getElementById("modal");
 let input = document.getElementById("modalInputName");
 let saveBtn = document.getElementById("modalBtn")
 let playerName ;
 let players = ["la"];
+
+
 const userNameSet = false;
     let div = document.createElement("div");
     input.after(div);
+
+    startBtn.disabled = true;
+
+
 saveBtn.addEventListener("click", e =>{
     let value = input.value;
     console.log(value);
@@ -23,8 +30,11 @@ if(players.includes(playerName)){
     div.style.height ="0"
     div.style.overflow ="visible";
     div.innerHTML = "this name is already taken";
+
+    // Håll startknappen inaktiverad om namnet är upptaget
+    startBtn.disabled = true;
     
-}else{
+} else {
     div.innerHTML= "";
 
     players.push(playerName)
@@ -40,6 +50,8 @@ if(players.includes(playerName)){
             MODAL.style.display="none";
 
     },3000)
+
+    startBtn.disabled = false;
  
     let gameOne = document.createElement("div");
     

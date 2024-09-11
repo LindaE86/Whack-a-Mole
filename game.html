@@ -18,11 +18,15 @@
         <input class="modalInputName" id="modalInputName" type="text">
         <button id="modalBtn" class="modalBtn">Save User</button>
     </div>
-    <p id="timer" >01:00</p>
+
     <div class="game-info">
-        <div id="score"><b>Score: 0</b></div>
-        <div id="timer"><b> 60s</b></div>
+        <div id="scoreDisplay"><b>Score: 0</b></div>
+        <div id="timeDisplay"><b> 60s</b></div>
+        <div id="startGameButton" class="startButton"></div>
     </div>
+<!-- 
+    <div id="scoreDisplay">Score: 0</div>
+    <div id="timeDisplay">Time Left: 60s</div> -->
     <div class="game-container">
         <div class="hole" id="hole1"></div>
         <div class="hole" id="hole2"></div>
@@ -51,8 +55,8 @@
         <div class="hole" id="hole25"></div>
     </div>
 
-    <script src="script.js"></script>
-    <script src="playerHandler.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="playerHandler.js"></script>
  
 </body>
 
