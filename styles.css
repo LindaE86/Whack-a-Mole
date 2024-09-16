@@ -2,7 +2,7 @@ html,
 body {
     height: 100%;
     box-sizing: border-box;
-    background-color: rgb(127, 127, 137);
+    background-color: rgb(191, 191, 206);
 }
 
 main {
@@ -36,19 +36,19 @@ section {
 
 
 .game-container {
-    background-color: rgba(18, 70, 15, 0.953);
+    background-color: rgb(50, 150, 50);
     display: grid;
-    grid-template-columns: repeat(5, 120px);
+    grid-template-columns: repeat(5, 76px);
     gap: 10px;
-    border: 4px solid rgba(19, 18, 18, 0.864);
+    border: 3px solid rgb(19, 18, 18);
     padding: 20px;
     border-radius: 10px;
 }
 
 .hole {
-    height: 110px;
-    background: rgb(53, 47, 47);
-    border: 5px solid rgb(30, 30, 30);
+    height: 70px;
+    background: rgb(98, 90, 90);
+    border: 3px solid rgb(47, 43, 43);
     cursor: pointer;
     border-radius: 100px;
 }
