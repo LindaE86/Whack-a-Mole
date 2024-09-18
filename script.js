@@ -29,8 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Lägg till event listener till alla hål, så att bara de med moles blir klickbara för poäng
     holes.forEach(hole => {
         hole.addEventListener('click', function() {
-            if (hole.classList.contains('active')) {
+            if (hole.children[0].classList.contains('active')) {
                 handleMoleClick.call(hole); 
+
             }
         });
     });
@@ -83,9 +84,12 @@ function startNewGameButton() {
 }
 
 function getRandomHole() {
-    const holes = document.querySelectorAll(".hole");
+   
+ const holes = document.querySelectorAll(".hole");
     const index = Math.floor(Math.random() * holes.length);
     return holes[index];
+   
+   
 }
 
 // Funktion för att visa tre slumpmässiga moles
@@ -107,15 +111,16 @@ function showThreeRandomMoles() {
 
         // Lägg till hålet i listan över valda moles och visa en mole
         chosenMoles.push(randomHole);
-        randomHole.classList.add('active');
+        randomHole.children[0].classList.add('active');
 
         // Ta bort mollen efter 4 sekunder
         setTimeout(() => {
-            randomHole.classList.remove('active');
+            randomHole.children[0].classList.remove('active');
             chosenMoles = chosenMoles.filter(hole => hole !== randomHole); 
         }, 4000);
 
-    }, Math.random() * 2000 + 1000); // Slumpmässig fördröjning mellan 1 till 3 sekunder
+    }, 100); // Slumpmässig fördröjning mellan 1 till 3 sekunder
+
 }
 
 // Funktion för att uppdatera poängen vid moleclick när spelet är aktivt
@@ -124,5 +129,6 @@ function handleMoleClick() {
         score++;  
         scoreDisplay.textContent = `Score: ${score}`;  
     }
-    this.classList.remove('active');  // Ta bort 'active' klassen från mollen så att den försvinner
+    this.children[0].classList.remove('active');  
+    // Ta bort 'active' klassen från mollen så att den försvinner
 }
