@@ -1,5 +1,6 @@
-// script.js
 
+// const hiscore = async (name, score, reactionTime) => {
+//     console.log("Trying to send data to firestore...");}
 export let startBtn; // används för reset och start
 export let gameActive = false;
 export let score = 0;

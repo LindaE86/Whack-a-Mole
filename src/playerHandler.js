@@ -1,11 +1,11 @@
-import { startBtn } from './script.js'; // Importera startBtn
+import { startBtn } from '../script.js'; // Importera startBtn
 
 document.addEventListener("DOMContentLoaded", function () {
     let MODAL = document.getElementById("modal");
     let input = document.getElementById("modalInputName");
     let saveBtn = document.getElementById("modalBtn");
     let playerName;
-    let players = ["la"];
+    let players = [];
 
     let div = document.createElement("div");
     input.after(div);
