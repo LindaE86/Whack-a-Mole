@@ -1,6 +1,6 @@
 import { startBtn } from '../script.js'; // Importera startBtn
-
-document.addEventListener("DOMContentLoaded", function () {
+import { savePlayerToDB } from './database.js';
+// document.addEventListener("DOMContentLoaded", function () {
     let MODAL = document.getElementById("modal");
     let input = document.getElementById("modalInputName");
     let saveBtn = document.getElementById("modalBtn");
@@ -12,28 +12,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!saveBtn) {
         console.error("saveBtn not found! Check if the button ID matches in the HTML.");
-        return;
 
     }
 
     // Startknappen ska vara inaktiverad tills ett giltigt namn har angetts
     startBtn.disabled = true;
 
-    // klicka på save user button
+    //klicka på save user button
     saveBtn.addEventListener("click", (e) => {
         let value = input.value.trim(); // Trimma eventuella mellanslag
         playerName = value;
 
         if (playerName) {
-            savePlayer();
+            savePlayer(playerName);
         } else {
             div.style.color = "red";
             div.innerHTML = "Name cannot be empty!";
         }
     });
 
-    function savePlayer() {
-        if (players.includes(playerName)) {
+    export function savePlayer(player) {
+        if (players.includes(player)) {
             // Visa felmeddelande om namnet redan finns
             div.style.fontSize = "12px";
             div.style.color = "red";
@@ -44,12 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             // Spara spelarnamnet om det är nytt
             div.innerHTML = "";
+            console.log("saving player button presed and name is okey")
             players.push(playerName); // Lägg till namnet i players-arrayen
-
-            // Logga alla spelarnamn för att verifiera att det sparats
-            players.forEach((element) => {
-                console.log(element);
-            });
 
             // Stäng modalen och visa spelet
             MODAL.classList.remove("modalContainer");
@@ -57,10 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
             MODAL.innerHTML = "Let's whack some moles!!!";
             setTimeout(() => {
                 MODAL.style.display = "none"; // Göm modalen efter en kort fördröjning
-            }, 1000);
-
+                startBtn.disabled = false;
+             }, 1000);
+            
+              savePlayerToDB();
             // Aktivera startknappen så att spelet kan börja
-            startBtn.disabled = false;
+          
         }
     }
-});
+//});

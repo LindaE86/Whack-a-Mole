@@ -25,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 
 let db = getFirestore(app);
 
-async function savePlayer(){
+export async function savePlayerToDB(){
 const hiscoreDocs = collection(db, 'hiscore');
 let playerName = document.getElementById("modalInputName");
 
@@ -41,7 +41,7 @@ await addDoc(hiscoreDocs,
 }
 
 }
-let btn = document.getElementById("modalBtn");
-btn.addEventListener("click", savePlayer);
+// let btn = document.getElementById("modalBtn");
+// btn.addEventListener("click", savePlayer);
 
 
