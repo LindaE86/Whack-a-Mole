@@ -1,5 +1,4 @@
 // script.js
-
 export let startBtn; // används för reset och start
 export let gameActive = false;
 export let score = 0;
@@ -8,6 +7,7 @@ export let timeLeft = 60;
 let holes; 
 let scoreDisplay; // uppdaterar poängen
 let timeDisplay; // uppdaterar tiden
+let topTime = 1000000000;
 
 document.addEventListener("DOMContentLoaded", function () {
     holes = document.querySelectorAll(".hole"); 
@@ -60,10 +60,13 @@ function startTimer() {
         if (timeLeft > 0) {
             timeLeft--;
             timeDisplay.textContent = `Time Left: ${timeLeft}s`;
-        } else {
+        }
+         else {
             clearInterval(timerInterval);
             gameActive = false;
             alert('Game over: ' + score);
+
+            // CARD 16: Send topTime + playerName to firebase DB in new var
 
             startBtn.disabled = false;
         }
@@ -109,6 +112,8 @@ function showThreeRandomMoles() {
         chosenMoles.push(randomHole);
         randomHole.classList.add('active');
 
+        randomHole.dataset.startTime = performance.now();
+
         // Ta bort mollen efter 4 sekunder
         setTimeout(() => {
             randomHole.classList.remove('active');
@@ -123,6 +128,14 @@ function handleMoleClick() {
     if (gameActive) {  
         score++;  
         scoreDisplay.textContent = `Score: ${score}`;  
+        
+        const endTime = performance.now();
+        const reactionTime = endTime - this.dataset.startTime;
+
+        topTime = Math.min(topTime, reactionTime);
+        console.log("reactiontime:", reactionTime, "ms"); 
+        console.log(topTime);
     }
     this.classList.remove('active');  // Ta bort 'active' klassen från mollen så att den försvinner
+    this.removeAttribute('data-startTime');
 }
