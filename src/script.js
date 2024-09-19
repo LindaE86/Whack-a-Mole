@@ -1,4 +1,3 @@
-// script.js
 
 export let startBtn; // används för reset och start
 export let gameActive = false;
