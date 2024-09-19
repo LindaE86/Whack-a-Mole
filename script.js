@@ -5,12 +5,19 @@ export let gameActive = false;
 export let score = 0;
 export let timeLeft = 60;
 
+<<<<<<< Updated upstream
 let introSound, gameOverSound, moleHitSound;
+=======
+>>>>>>> Stashed changes
 let holes;
 let scoreDisplay; // uppdaterar poängen
 let timeDisplay; // uppdaterar tiden
 
 document.addEventListener("DOMContentLoaded", function () {
+<<<<<<< Updated upstream
+=======
+    holes = document.querySelectorAll(".hole");
+>>>>>>> Stashed changes
 
     introSound = document.getElementById('introSound');
     gameOverSound = document.getElementById('gameOverSound');
@@ -129,7 +136,11 @@ function showThreeRandomMoles() {
             chosenMoles = chosenMoles.filter(hole => hole !== randomHole);
         }, 4000);
 
+<<<<<<< Updated upstream
     }, Math.random() * 1000 + 500); // Slumpmässig fördröjning mellan 1 till 3 sekunder
+=======
+    }, Math.random() * 800 + 200);
+>>>>>>> Stashed changes
 
 }
 
@@ -138,8 +149,11 @@ function handleMoleClick() {
     if (gameActive) {
         score++;
         scoreDisplay.textContent = `Score: ${score}`;
+<<<<<<< Updated upstream
 
         moleHitSound.play();
+=======
+>>>>>>> Stashed changes
     }
     this.children[0].classList.remove('active');
     // Ta bort 'active' klassen från mollen så att den försvinner
