@@ -10,6 +10,10 @@
     <title>whack a mole</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styleModal.css">
+    <!-- Firebase SDK länkar, Dessa bör väll ligga här för att säkerställa firebase?-->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js"></script>
+
 </head>
 
 <body>
@@ -24,6 +28,7 @@
             <div id="scoreDisplay"><b>Score: 0</b></div>
             <div id="timeDisplay"><b> 60s</b></div>
             <div id="startGameButton" class="startButton"></div>
+            <ul id="top10List"></ul> <!-- Topp 10 listan -->
         </div>
     <section>
         <div class="game-container">
@@ -55,6 +60,7 @@
         </div>
     </section>
         <script type="module" src="script.js"></script>
+        <script type="module" src="top10Handler.js"></script>
         <script type="module" src="playerHandler.js"></script>
     </main>
 </body>
