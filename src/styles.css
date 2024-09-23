@@ -32,6 +32,19 @@ section {
     align-items: center;
     justify-content: center;
     margin-top: 3rem;
+
+    div {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+}
+
+.info-box {
+    border: 2px solid rgb(109, 108, 108);
+    padding: 8px;
+    font-size: larger;
+
 }
 
 
@@ -74,11 +87,32 @@ section {
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease;
-
 }
 
 /* Hover-effekt */
 #startNewGameButton:hover {
     background-color: #45a049;
     /* Mörkare grön vid hover */
+}
+
+
+/* Add these styles to your CSS */
+#top10Container.hidden {
+  display: none;
+}
+
+#top10Container.show {
+  display: block;
+}
+
+#top10Container {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 1.8rem;
+    margin: 2rem;
+    line-height: 1.7rem;
+}
+
+#top10List  {
+    list-style-type:none;
 }

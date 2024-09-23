@@ -1,12 +1,16 @@
+import { updateScore, fetchTop10, hideTop10List } from './top10Handler.js';
+import { db, savePlayerToDB } from './database.js';
 
 export let startBtn; // används för reset och start
 export let gameActive = false;
 export let score = 0;
 export let timeLeft = 60;
+let playerName; 
 
 let holes; 
 let scoreDisplay; // uppdaterar poängen
 let timeDisplay; // uppdaterar tiden
+let topTime = 1000000000;
 
 document.addEventListener("DOMContentLoaded", function () {
     holes = document.querySelectorAll(".hole"); 
@@ -33,7 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
 });
+
+export function setPlayerName(name) {
+    playerName = name; // Funktion för att sätta spelarnamn
+}
 
 // Funktion för att starta spelet
 function startNewGame() {
@@ -53,7 +62,8 @@ function startNewGame() {
     }
 }
 
-// Funktion för att starta nedräkning
+
+//Funktion för att starta nedräkning
 function startTimer() {
     const timerInterval = setInterval(() => {
         if (timeLeft > 0) {
@@ -63,6 +73,19 @@ function startTimer() {
             clearInterval(timerInterval);
             gameActive = false;
             alert('Game over: ' + score);
+            
+            fetchTop10();
+            console.log("Score to be saved:", score);
+            console.log("Username to be saved:", playerName); // Kontrollera att playerName är definierad
+
+            // Kontrollera playerName 
+            if (playerName) {
+                updateScore(playerName, score);
+                // savePlayerToDB(playerName, score);
+            } else {
+                console.error("playerName is undefined!");
+            }
+    
 
             startBtn.disabled = false;
         }
@@ -87,6 +110,7 @@ function getRandomHole() {
     return holes[index];
 }
 
+
 // Funktion för att visa tre slumpmässiga moles
 function showThreeRandomMoles() {
     let chosenMoles = [];
@@ -108,6 +132,9 @@ function showThreeRandomMoles() {
         chosenMoles.push(randomHole);
         randomHole.classList.add('active');
 
+        randomHole.dataset.startTime = performance.now();
+
+
         // Ta bort mollen efter 4 sekunder
         setTimeout(() => {
             randomHole.classList.remove('active');
@@ -122,6 +149,16 @@ function handleMoleClick() {
     if (gameActive) {  
         score++;  
         scoreDisplay.textContent = `Score: ${score}`;  
+        console.log("Current score:", score); 
+
+        const endTime = performance.now();
+        const reactionTime = endTime - this.dataset.startTime;
+        topTime = Math.min(topTime, reactionTime);
+        console.log("reactiontime:", reactionTime, "ms"); 
+        console.log(topTime);
     }
     this.classList.remove('active');  // Ta bort 'active' klassen från mollen så att den försvinner
+    this.removeAttribute('data-startTime');
 }
+
+
