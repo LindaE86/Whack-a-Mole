@@ -3,12 +3,9 @@ body {
     background-color: rgb(34, 33, 32);
     margin: 0;
     padding: 0;
-
-
 }
 
 main {
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,6 +49,7 @@ section {
     font-size: larger;
 
 }
+
 
 .game-container {
     background-image: url("img/green-grass-540x540_jpg-Dec-06-2023-05-24-24-3308-PM.webp");
@@ -108,7 +106,6 @@ img.active {
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease;
-
 }
 
 /* Hover-effekt */
@@ -127,4 +124,25 @@ img.active {
         opacity: 1;
         scale: 1.2;
     }
+}
+
+/* Add these styles to your CSS */
+#top10Container.hidden {
+  display: none;
+}
+
+#top10Container.show {
+  display: block;
+}
+
+#top10Container {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 1.8rem;
+    margin: 2rem;
+    line-height: 1.7rem;
+}
+
+#top10List  {
+    list-style-type:none;
 }

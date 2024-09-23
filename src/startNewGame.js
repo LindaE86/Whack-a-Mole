@@ -1,3 +1,5 @@
+import { hideTop10List } from './top10Handler.js';
+
 let board;
 let startBtn; // används för reset och start
 let timeLeft = 60;
@@ -16,11 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
     scoreDisplay.textContent = `Score: ${score}`;
     timeDisplay.textContent = `Time Left: ${timeLeft}s`;
 
-    // Anropa funktionen för att skapa knappen när sidan laddas
+   
+   
     startNewGameButton();
 
-    // Funktion för att starta spelet
-    function startNewGame() {
+       // Funktion för att starta spelet
+       function startNewGame() {
         if (!gameActive) {
             // Återställer dessa värden när man klickar
             score = 0;
@@ -34,10 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
             // Inaktivera knappen när spelet startar
             startBtn.disabled = true;
 
+            hideTop10List();
+
             // Starta nedräkningen
             startTimer();
         }
     }
+
 
     // Funktion för att starta nedräkning
     function startTimer() {
@@ -47,11 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 timeDisplay.textContent = `Time Left: ${timeLeft}s`;
             } else {
                 clearInterval(timerInterval);
-                gameActive = false;
-                alert('Game over: ' + score);
-
-                // Aktivera knappen igen när spelet är slut
-                startBtn.disabled = false;
+                endGame(); // Anropa endGame när tiden är slut
             }
         }, 1000);
     }
@@ -69,3 +71,5 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('startGameButton').appendChild(startBtn);
     }
 });
+
+export {endGame};
