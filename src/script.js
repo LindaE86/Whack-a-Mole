@@ -1,19 +1,19 @@
-import { updateScore, fetchTop10, hideTop10List } from './top10Handler.js';
+import { updateScore, fetchTop10 } from './top10Handler.js';
 import { db, savePlayerToDB } from './database.js';
 
 export let startBtn; // används för reset och start
 export let gameActive = false;
 export let score = 0;
 export let timeLeft = 60;
-let playerName; 
+let playerName;
 
-let holes; 
+let holes;
 let scoreDisplay; // uppdaterar poängen
 let timeDisplay; // uppdaterar tiden
 let topTime = 1000000000;
 
 document.addEventListener("DOMContentLoaded", function () {
-    holes = document.querySelectorAll(".hole"); 
+    holes = document.querySelectorAll(".hole");
 
     scoreDisplay = document.getElementById('scoreDisplay');
     timeDisplay = document.getElementById('timeDisplay');
@@ -22,26 +22,27 @@ document.addEventListener("DOMContentLoaded", function () {
     gameOverSound = document.getElementById('gameOverSound');
     moleHitSound = document.getElementById('moleHitSound');
 
+    introSound.volume = 0.3;
+    gameOverSound.volume = 0.3;
+    moleHitSound.volume = 0.3;
+
     if (!scoreDisplay || !timeDisplay) {
         console.error("scoreDisplay or timeDisplay element not found");
-        return; 
+        return;
     }
 
     scoreDisplay.textContent = `Score: ${score}`;
     timeDisplay.textContent = `Time Left: ${timeLeft}s`;
 
-    // Anropa startNewGameButton
     startNewGameButton();
 
-    // Lägg till event listener till alla hål, så att bara de med moles blir klickbara för poäng
     holes.forEach(hole => {
-        hole.addEventListener('click', function() {
+        hole.addEventListener('click', function () {
             if (hole.children[0].classList.contains('active')) {
-                handleMoleClick.call(hole); 
+                handleMoleClick.call(hole);
             }
         });
     });
-
 });
 
 export function setPlayerName(name) {
@@ -62,15 +63,14 @@ function startNewGame() {
         introSound.play();
         startTimer();
 
-        setTimeout(()=> {
-            showThreeRandomMoles();
-        },1500)
-        
+        // Visa de första tre mullvadarna direkt
+        for (let i = 0; i < 3; i++) {
+            showNextMole();
+        }
     }
 }
 
-
-//Funktion för att starta nedräkning
+// Funktion för att starta nedräkning
 function startTimer() {
     const timerInterval = setInterval(() => {
         if (timeLeft > 0) {
@@ -79,20 +79,15 @@ function startTimer() {
         } else {
             clearInterval(timerInterval);
             gameActive = false;
-            introSound.pause()
+            introSound.pause();
             gameOverSound.play();
             fetchTop10();
-            console.log("Score to be saved:", score);
-            console.log("Username to be saved:", playerName); // Kontrollera att playerName är definierad
 
-            // Kontrollera playerName 
             if (playerName) {
                 updateScore(playerName, score);
-                // savePlayerToDB(playerName, score);
             } else {
                 console.error("playerName is undefined!");
             }
-    
 
             startBtn.disabled = false;
         }
@@ -112,63 +107,53 @@ function startNewGameButton() {
 }
 
 function getRandomHole() {
-    const holes = document.querySelectorAll(".hole");
     const index = Math.floor(Math.random() * holes.length);
     return holes[index];
 }
 
+// Funktion för att visa nästa mullvad
+function showNextMole() {
+    if (!gameActive) {
+        return;
+    }
 
-// Funktion för att visa tre slumpmässiga moles
-function showThreeRandomMoles() {
-    let chosenMoles = [];
+    const activeMoles = Array.from(holes).filter(hole => hole.children[0].classList.contains('active')).length;
 
-    const interval = setInterval(() => {
-        if (!gameActive) {
-            clearInterval(interval);
-            return;
+    if (activeMoles < 3) {
+        let randomHole = getRandomHole();
+
+        // Kontrollera att hålet inte redan har en aktiv mullvad
+        if (!randomHole.children[0].classList.contains('active')) {
+            randomHole.children[0].classList.add('active');
+            randomHole.dataset.startTime = performance.now(); // Spara starttid för reaktionstid
+
+            // Ta bort mullvaden efter 4 sekunder
+            setTimeout(() => {
+                if (randomHole.children[0].classList.contains('active')) {
+                    randomHole.children[0].classList.remove('active');
+                }
+            }, 4000);
+
+            // Anropa showNextMole efter en viss fördröjning
+            setTimeout(showNextMole, Math.random() * 1500 + 1000); // Fördröjning mellan 1 och 2 sekunder
         }
-
-        // Kontrollerar så bara tre aktiva moles visas samtidigt
-        if (chosenMoles.length >= 3) {
-            return;  
-        }
-
-        let randomHole = getRandomHole();  // Hämta ett slumpmässigt hål
-
-        // Lägg till hålet i listan över valda moles och visa en mole
-        chosenMoles.push(randomHole);
-        randomHole.children[0].classList.add('active');
-
-        randomHole.dataset.startTime = performance.now();
-
-
-        // Ta bort mollen efter 4 sekunder
-        setTimeout(() => {
-            randomHole.children[0].classList.remove('active');
-            chosenMoles = chosenMoles.filter(hole => hole !== randomHole); 
-        }, 4000);
-
-    }, Math.random() * 800 + 200); // Slumpmässig fördröjning mellan 1 till 3 sekunder
+    } else {
+        // Om det redan finns tre aktiva, vänta och försök igen
+        setTimeout(showNextMole, 1000); // Vänta 1 sekund innan nästa försök
+    }
 }
 
 // Funktion för att uppdatera poängen vid moleclick när spelet är aktivt
 function handleMoleClick() {
-    if (gameActive) {  
+    if (gameActive) {
         moleHitSound.play();
-        score++;  
-        scoreDisplay.textContent = `Score: ${score}`;  
-        console.log("Current score:", score); 
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
 
         const endTime = performance.now();
         const reactionTime = endTime - this.dataset.startTime;
         topTime = Math.min(topTime, reactionTime);
-        console.log("reactiontime:", reactionTime, "ms"); 
-        console.log(topTime);
- 
-       
     }
-    this.children[0].classList.remove('active');  // Ta bort 'active' klassen från mollen så att den försvinner
+    this.children[0].classList.remove('active');  // Ta bort 'active' klassen från mollen
     this.removeAttribute('data-startTime');
 }
-
-
