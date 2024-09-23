@@ -28,7 +28,14 @@
         <div id="scoreDisplay"><b>Score: 0</b></div>
         <div id="timeDisplay"><b> 60s</b></div>
         <div id="startGameButton" class="startButton"></div>
+        
       </div>
+      <div id="top10Container" class="hidden">
+        <h2>Top 10 Scores</h2>
+        <ul id="top10List"></ul>
+      </div> 
+      <!-- Behövs lägga till html för reaktionstid -->
+
       <section>
         <div class="game-container">
           <div class="hole" id="hole1"></div>
@@ -59,12 +66,11 @@
         </div>
       </section>
     </main>
+    
     <script type="module" src="main.js"></script>
-<!-- 
+    <script type="module" src="script.js"></script>
     <script type="module" src="database.js"></script>
-   
-    <script type="module" src="playerHandler.js">
-      
-    </script> <script type="module" src="script.js"></script> -->
+    <script type="module" src="top10Handler.js"></script>
+    <script type="module" src="playerHandler.js"></script>
   </body>
 </html>
