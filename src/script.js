@@ -79,7 +79,7 @@ function startTimer() {
         } else {
             clearInterval(timerInterval);
             gameActive = false;
-            
+            introSound.pause()
             gameOverSound.play();
             fetchTop10();
             console.log("Score to be saved:", score);
@@ -154,6 +154,7 @@ function showThreeRandomMoles() {
 // Funktion för att uppdatera poängen vid moleclick när spelet är aktivt
 function handleMoleClick() {
     if (gameActive) {  
+        moleHitSound.play();
         score++;  
         scoreDisplay.textContent = `Score: ${score}`;  
         console.log("Current score:", score); 
@@ -163,6 +164,8 @@ function handleMoleClick() {
         topTime = Math.min(topTime, reactionTime);
         console.log("reactiontime:", reactionTime, "ms"); 
         console.log(topTime);
+ 
+       
     }
     this.children[0].classList.remove('active');  // Ta bort 'active' klassen från mollen så att den försvinner
     this.removeAttribute('data-startTime');
