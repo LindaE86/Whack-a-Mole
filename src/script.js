@@ -4,19 +4,22 @@ import { db, savePlayerToDB } from './database.js';
 export let startBtn; // används för reset och start
 export let gameActive = false;
 export let score = 0;
-export let timeLeft = 60;
+export let timeLeft = 5;
 let playerName;
 
 let holes;
 let scoreDisplay; // uppdaterar poängen
 let timeDisplay; // uppdaterar tiden
 let topTime = 1000000000;
+export let reactionTimes = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     holes = document.querySelectorAll(".hole");
 
     scoreDisplay = document.getElementById('scoreDisplay');
     timeDisplay = document.getElementById('timeDisplay');
+
+    const reactionTimeList = document.getElementById('reactionTimeList'); 
 
     introSound = document.getElementById('introSound');
     gameOverSound = document.getElementById('gameOverSound');
@@ -53,7 +56,7 @@ export function setPlayerName(name) {
 function startNewGame() {
     if (!gameActive) {
         score = 0;
-        timeLeft = 60;
+        timeLeft = 5;
         gameActive = true;
 
         scoreDisplay.textContent = `Score: ${score}`;
@@ -151,9 +154,68 @@ function handleMoleClick() {
         scoreDisplay.textContent = `Score: ${score}`;
 
         const endTime = performance.now();
-        const reactionTime = endTime - this.dataset.startTime;
+        const reactionTime = endTime - this.dataset.startTime; // Beräkna reaktionstid
+
+        // Kontrollera att this.dataset.startTime är definierad
+        if (!this.dataset.startTime) {
+            console.error("Start time is undefined!");
+            return;
+        }
+
+        // Kontrollera om reactionTime är ett giltigt nummer
+        if (typeof reactionTime !== 'number' || isNaN(reactionTime)) {
+            console.error("Invalid reaction time:", reactionTime);
+            return; // Avbryt om reactionTime inte är giltigt
+        }
+    // Kontrollera om reactionTime är ett giltigt nummer
+    if (typeof reactionTime !== 'number' || isNaN(reactionTime)) {
+        console.error("Invalid reaction time:", reactionTime);
+        return; // Avbryt om reactionTime inte är giltigt
+    }
+
+
         topTime = Math.min(topTime, reactionTime);
+
+        // Lägger till spelarens reaktionstid och sorterar listan
+        reactionTimes.push({ name: playerName, time: reactionTime });
+        reactionTimes.sort((a, b) => a.time - b.time); // Sortera efter tid
+
+        // Begränsa till topp 10
+        if (reactionTimes.length > 10) {
+            reactionTimes.pop(); 
+        }
+
+        // Spara reaktionstid och poäng i databasen
+        if (playerName) {
+            // console.log("Saving player to DB with reaction time:", reactionTime);
+            updateScore(playerName, score, reactionTime);
+        } else {
+            console.error("playerName is undefined!");
+        }
+
+        // Uppdatera visningen
+        displayReactionTimes();
     }
     this.children[0].classList.remove('active');  // Ta bort 'active' klassen från mollen
     this.removeAttribute('data-startTime');
 }
+
+
+
+function displayReactionTimes() {
+    const reactionTimeList = document.getElementById('reactionTimeList');
+    if (!reactionTimeList) {
+        console.error("reactionTimeList element not found");
+        return;
+    }
+
+    reactionTimeList.innerHTML = '';
+
+    reactionTimes.forEach(entry => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${entry.name}: ${entry.time.toFixed(2)} ms`;
+        reactionTimeList.appendChild(listItem);
+    });
+}
+
+

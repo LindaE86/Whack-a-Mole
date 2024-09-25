@@ -7,6 +7,7 @@ import {
   onSnapshot,
   addDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { reactionTimes } from './script.js';
 
 console.log("Firestore DB instance:", db);
 const hiscoreCollectionRef = collection(db, 'hiscore');
@@ -63,12 +64,14 @@ function hideTop10List() {
 }
 
 // Add a new score to the database
-function updateScore(playerName, score) {
-    console.log("Updating score for:", playerName, "Score:", score);
+function updateScore(playerName, score, reactionTime) {
+    console.log("Updating score for:", playerName, "Score:", score, "ReactionTime", reactionTime);
     return addDoc(hiscoreCollectionRef, {
       playerName,
       score,
+      reactionTime, 
       timestamp: new Date()
+     
     })
     .then(() => {
       console.log("Poängen tillagd!");

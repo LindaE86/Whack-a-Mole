@@ -146,3 +146,8 @@ img.active {
 #top10List  {
     list-style-type:none;
 }
+
+#reactionTimeList {
+ 
+    line-height: 1.7rem;
+}
