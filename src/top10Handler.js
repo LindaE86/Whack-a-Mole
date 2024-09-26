@@ -11,7 +11,6 @@ import {
 console.log("Firestore DB instance:", db);
 const hiscoreCollectionRef = collection(db, 'hiscore');
 
-
 // Fetch and display top 10 scores
 function fetchTop10() {
   const q = query(hiscoreCollectionRef, orderBy('score', 'desc'), limit(10));
@@ -25,8 +24,7 @@ function fetchTop10() {
   });
 }
 
-
-// Funktion för att visa top 10 listan i HTML
+// Funktion för att visa top 10 listan i HTML och automatiskt dölja den efter 10 sekunder
 function displayTop10(scores) {
     const container = document.getElementById('top10Container');
     const list = document.getElementById('top10List');
@@ -34,17 +32,20 @@ function displayTop10(scores) {
   
     if (container && list) {
       list.innerHTML = ''; // Töm listan först
-  
 
-    scores.forEach((player, index) => {
+      scores.forEach((player, index) => {
         const listItem = document.createElement('li');
         listItem.textContent = `${index + 1}. ${player.playerName}: ${player.score}`;
         list.appendChild(listItem);
       });
-      
-  
+
       container.classList.remove('hidden'); // Visa listan om den är dold
       container.classList.add('show');
+
+      // Dölj listan automatiskt efter 10 sekunder
+      setTimeout(() => {
+        hideTop10List();
+      }, 10000);  // Timer satt till 10000 ms
     } else {
       console.error("Could not find the top 10 container or list.");
     }
@@ -53,7 +54,6 @@ function displayTop10(scores) {
 // Hide the top 10 list
 function hideTop10List() {
   const container = document.getElementById('top10Container');
-
   if (container) {
     container.classList.remove('show');
     container.classList.add('hidden');
@@ -78,6 +78,5 @@ function updateScore(playerName, score) {
       throw error; 
     });
   }
-  
 
 export { fetchTop10, updateScore, hideTop10List };
