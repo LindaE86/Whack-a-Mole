@@ -46,10 +46,16 @@ function displayTop10(scores) {
   
       container.classList.remove('hidden'); // Visa listan om den är dold
       container.classList.add('show');
-    } else {
+      setTimeout(() => {
+        hideTop10List();
+      }, 10000);  // Timer satt till 10000 ms
+    }
+     else {
       console.error("Could not find the top 10 container or list.");
     }
   }
+
+
 
 // Hide the top 10 list
 function hideTop10List() {
