@@ -7,6 +7,7 @@ import {
   onSnapshot,
   addDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { topTime } from './script.js';
 
 console.log("Firestore DB instance:", db);
 const hiscoreCollectionRef = collection(db, 'hiscore');
@@ -14,7 +15,7 @@ const hiscoreCollectionRef = collection(db, 'hiscore');
 
 // Fetch and display top 10 scores
 function fetchTop10() {
-  const q = query(hiscoreCollectionRef, orderBy('score', 'desc'), limit(10));
+  const q = query(hiscoreCollectionRef, orderBy('score', 'desc', 'topTime'), limit(10));
 
   onSnapshot(q, (snapshot) => {
     const top10Scores = snapshot.docs.map(doc => doc.data());
@@ -38,7 +39,7 @@ function displayTop10(scores) {
 
     scores.forEach((player, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `${index + 1}. ${player.playerName}: ${player.score}`;
+        listItem.textContent = `${index + 1}. ${player.playerName}: ${player.score} RT: ${player.topTime}ms`;
         list.appendChild(listItem);
       });
       
@@ -68,6 +69,7 @@ function updateScore(playerName, score) {
     return addDoc(hiscoreCollectionRef, {
       playerName,
       score,
+      topTime,
       timestamp: new Date()
     })
     .then(() => {

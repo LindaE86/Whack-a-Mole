@@ -5,12 +5,12 @@ export let startBtn; // används för reset och start
 export let gameActive = false;
 export let score = 0;
 export let timeLeft = 60;
+export let topTime = 1000000000;
 let playerName;
 
 let holes;
 let scoreDisplay; // uppdaterar poängen
 let timeDisplay; // uppdaterar tiden
-let topTime = 1000000000;
 
 document.addEventListener("DOMContentLoaded", function () {
     holes = document.querySelectorAll(".hole");

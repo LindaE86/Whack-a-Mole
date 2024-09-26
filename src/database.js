@@ -1,6 +1,6 @@
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";      
 // import { getFirestore, collection, addDoc,  } from  "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-import { score } from './script.js';
+import { score, topTime } from './script.js';
 // import { fetchTop10, updateScore, hideTop10List } from "./top10Handler.js";
 
 // const firebaseConfig = {
@@ -53,12 +53,13 @@ import { getFirestore, collection, addDoc } from "https://www.gstatic.com/fireba
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function savePlayerToDB(playerName, score) {
+  async function savePlayerToDB(playerName, score, topTime) {
     console.log("Attempting to save player to DB with name:", playerName);
     
     // Lägg till loggar för playerName och score
     console.log("Player Name:", playerName);
     console.log("Score:", score);
+
   
     const hiscoreDocs = collection(db, 'hiscore');
   
@@ -75,7 +76,9 @@ import { getFirestore, collection, addDoc } from "https://www.gstatic.com/fireba
     try {
       await addDoc(hiscoreDocs, {
         playerName: playerName,
-        score: score
+        score: score, 
+        reaction: topTime
+
       });
       console.log("Data added successfully");
     } catch (error) {

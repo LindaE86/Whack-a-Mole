@@ -1,4 +1,4 @@
-import { setPlayerName, startBtn } from './script.js'; // Importera setPlayerName
+import { setPlayerName, startBtn, topTime } from './script.js'; // Importera setPlayerName
 import { savePlayerToDB } from './database.js';
 import { fetchTop10, updateScore, hideTop10List } from './top10Handler.js';
 import { score } from './script.js';
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
             console.log("Saving player to DB:", playerName);
             // Spara spelarnamnet i databasen
-            savePlayerToDB(playerName, score); // Kontrollera att score har rätt värde
+            savePlayerToDB(playerName, score, topTime); // Kontrollera att score har rätt värde
     
             // Aktivera startknappen
             startBtn.disabled = false;
